@@ -10,6 +10,11 @@ export default class Login extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <Image source={logo} />
+
+        <TextInput
+          placeholder="Digite seu usuário no GitHub."
+          style={styles.input}
+        />
       </SafeAreaView>
     );
   }

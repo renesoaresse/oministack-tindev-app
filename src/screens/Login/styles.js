@@ -6,6 +6,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 30,
+  },
+  input: {
+    height: 46,
+    alignSelf: 'stretch',
+    backgroundColor: '#FFF',
+    borderWidth: 1,
+    borderColor: '#DDD',
   },
 });
 
