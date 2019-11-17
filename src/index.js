@@ -1,13 +1,10 @@
 import React from 'react';
-import {SafeAreaView, Text, StatusBar} from 'react-native';
+import Login from './screens/Login';
 
 const App: () => React$Node = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <Text>Hello Word</Text>
-      </SafeAreaView>
+      <Login />
     </>
   );
 };

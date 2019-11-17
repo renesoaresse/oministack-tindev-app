@@ -7,7 +7,7 @@ import styles from './styles';
 export default class Login extends Component {
   render() {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={styles.container}>
         <Text>Login</Text>
       </SafeAreaView>
     );
