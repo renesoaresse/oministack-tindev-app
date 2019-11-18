@@ -1,10 +1,10 @@
 import React from 'react';
-import Login from './screens/Login';
+import Routes from './routes';
 
 const App: () => React$Node = () => {
   return (
     <>
-      <Login />
+      <Routes />
     </>
   );
 };
