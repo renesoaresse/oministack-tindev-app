@@ -48,6 +48,27 @@ const styles = StyleSheet.create({
     marginTop: 5,
     lineHeight: 18,
   },
+  buttonsContainer: {
+    flexDirection: 'row',
+    marginBottom: 30,
+  },
+  button: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 20,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
 });
 
 export default styles;
