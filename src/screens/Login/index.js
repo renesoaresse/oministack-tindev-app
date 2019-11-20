@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
   KeyboardAvoidingView,
@@ -8,6 +8,7 @@ import {
   Text,
   Platform,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../../services/api';
 
@@ -17,12 +18,22 @@ import styles from './styles';
 export default function Login({navigation}) {
   const [user, setUser] = useState('');
 
+  useEffect(() => {
+    AsyncStorage.getItem('@Tindev:user').then(user => {
+      if (user) {
+        navigation.navigate('Main', {user});
+      }
+    });
+  }, [navigation]);
+
   async function handleLogin() {
     const response = await api.post('/devs', {username: user});
 
     const {_id} = response.data;
 
-    console.log(_id);
+    await AsyncStorage.setItem('@Tindev:user', _id);
+
+    navigation.navigate('Main', {user: _id});
   }
 
   return (
