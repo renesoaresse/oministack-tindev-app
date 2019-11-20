@@ -1,13 +1,10 @@
 import React from 'react';
-import {SafeAreaView, Text, StatusBar} from 'react-native';
+import Routes from './routes';
 
 const App: () => React$Node = () => {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <Text>Hello Word</Text>
-      </SafeAreaView>
+      <Routes />
     </>
   );
 };
