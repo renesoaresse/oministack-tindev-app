@@ -1,38 +1,88 @@
-import React from 'react';
-
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Image, View, Text, TouchableOpacity} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import api from '../../services/api';
 
 import logo from '../../assets/logo.png';
 import like from '../../assets/like.png';
 import dislike from '../../assets/dislike.png';
+
 import styles from './styles';
 
 export default function Main({navigation}) {
+  const id = navigation.getParam('user');
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    async function loadUsers() {
+      const reponse = await api.get('/devs', {
+        headers: {user: id},
+      });
+
+      setUsers(reponse.data);
+    }
+    loadUsers();
+  }, [id]);
+
+  async function handleLike() {
+    const [user, ...rest] = users;
+    await api.post(`/devs/${user._id}/like`, null, {
+      headers: {user: id},
+    });
+
+    setUsers(rest);
+  }
+
+  async function handleDeslike() {
+    const [user, ...rest] = users;
+    await api.post(`/devs/${user._id}/notlike`, null, {
+      headers: {user: id},
+    });
+
+    setUsers(rest);
+  }
+
+  async function handleLogout() {
+    await AsyncStorage.clear();
+
+    navigation.navigate('Login');
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <Image style={styles.logo} source={logo} />
+      <TouchableOpacity onPress={handleLogout}>
+        <Image style={styles.logo} source={logo} />
+      </TouchableOpacity>
       <View style={styles.cardsContainer}>
-        <View style={styles.card}>
-          <Image
-            style={styles.avatar}
-            source={{
-              uri: 'https://avatars2.githubusercontent.com/u/2254731?v=4',
-            }}
-          />
-          <View style={styles.footer}>
-            <Text style={styles.name}>Diego Fernandes</Text>
-            <Text style={styles.bio} numberOfLines={2}>
-              CTO na @Rocketseat. Apaixonado pelas melhores tecnologias de
-              desenvolvimento web e mobile.
-            </Text>
-          </View>
-        </View>
+        {users.length === 0 ? (
+          <Text style={styles.empty}>Não existe outro dev.</Text>
+        ) : (
+          users.map((user, index) => (
+            <View
+              key={user._id}
+              style={[styles.card, {zIndex: users.length - index}]}>
+              <Image
+                style={styles.avatar}
+                source={{
+                  uri: user.avatar,
+                }}
+              />
+              <View style={styles.footer}>
+                <Text style={styles.name}>{user.name}</Text>
+                <Text style={styles.bio} numberOfLines={2}>
+                  {user.bio}
+                </Text>
+              </View>
+            </View>
+          ))
+        )}
       </View>
       <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleDeslike}>
           <Image source={dislike} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleLike}>
           <Image source={like} />
         </TouchableOpacity>
       </View>

@@ -24,7 +24,7 @@ export default function Login({navigation}) {
         navigation.navigate('Main', {user});
       }
     });
-  }, []);
+  }, [navigation]);
 
   async function handleLogin() {
     const response = await api.post('/devs', {username: user});
@@ -33,7 +33,7 @@ export default function Login({navigation}) {
 
     await AsyncStorage.setItem('@Tindev:user', _id);
 
-    navigation.navigate('Main', {_id});
+    navigation.navigate('Main', {user: _id});
   }
 
   return (

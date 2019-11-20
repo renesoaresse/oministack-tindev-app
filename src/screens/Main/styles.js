@@ -10,6 +10,12 @@ const styles = StyleSheet.create({
   logo: {
     marginTop: 30,
   },
+  empty: {
+    alignSelf: 'center',
+    color: '#999',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
   cardsContainer: {
     flex: 1,
     alignSelf: 'stretch',
