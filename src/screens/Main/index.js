@@ -108,17 +108,17 @@ export default function Main({navigation}) {
 
       {matchDev && (
         <View style={styles.matchContainer}>
-          <Image source={itsamatch} />
+          <Image style={styles.matchImage} source={itsamatch} />
           <Image
             style={styles.matchAvatar}
             source={{
-              uri: '"https://avatars0.githubusercontent.com/u/16529958?v=4',
+              uri: matchDev.avatar,
             }}
           />
-          <Text style={styles.matchName}>Renê Soares</Text>
-          <Text style={styles.matchBio}>Renê Soares</Text>
+          <Text style={styles.matchName}>{matchDev.name}</Text>
+          <Text style={styles.matchBio}>{matchDev.bio}</Text>
 
-          <TouchableOpacity onPress={() => setMatchDev(false)}>
+          <TouchableOpacity onPress={() => setMatchDev(null)}>
             <Text style={styles.matchClose}>FECHAR</Text>
           </TouchableOpacity>
         </View>
