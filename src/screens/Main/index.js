@@ -1,18 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView, Image, View, Text, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import io from 'socket.io-client';
 
 import api from '../../services/api';
 
 import logo from '../../assets/logo.png';
 import like from '../../assets/like.png';
 import dislike from '../../assets/dislike.png';
+import itsamatch from '../../assets/itsamatch.png';
 
 import styles from './styles';
 
 export default function Main({navigation}) {
   const id = navigation.getParam('user');
   const [users, setUsers] = useState([]);
+  const [matchDev, setMatchDev] = useState(true);
 
   useEffect(() => {
     async function loadUsers() {
@@ -24,6 +27,20 @@ export default function Main({navigation}) {
     }
     loadUsers();
   }, [id]);
+
+  useEffect(() => {
+    const socket = io('http://localhost:3333', {
+      query: {user: id},
+    });
+
+    socket.on(
+      'match',
+      dev => {
+        setMatchDev(dev);
+      },
+      [id],
+    );
+  });
 
   async function handleLike() {
     const [user, ...rest] = users;
@@ -78,14 +95,34 @@ export default function Main({navigation}) {
           ))
         )}
       </View>
-      <View style={styles.buttonsContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleDeslike}>
-          <Image source={dislike} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleLike}>
-          <Image source={like} />
-        </TouchableOpacity>
-      </View>
+      {users.length > 0 && (
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity style={styles.button} onPress={handleDeslike}>
+            <Image source={dislike} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={handleLike}>
+            <Image source={like} />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {matchDev && (
+        <View style={styles.matchContainer}>
+          <Image source={itsamatch} />
+          <Image
+            style={styles.matchAvatar}
+            source={{
+              uri: '"https://avatars0.githubusercontent.com/u/16529958?v=4',
+            }}
+          />
+          <Text style={styles.matchName}>Renê Soares</Text>
+          <Text style={styles.matchBio}>Renê Soares</Text>
+
+          <TouchableOpacity onPress={() => setMatchDev(false)}>
+            <Text style={styles.matchClose}>FECHAR</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
